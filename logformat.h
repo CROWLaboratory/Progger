@@ -1,0 +1,30 @@
+#define PROGGER_ID "Progger:"
+
+//Log Formats
+#define LOG_OPEN(type,user,pid,ppid,audit,paudit,pname,filename,path,flags,mode,fd) printk(KERN_INFO "%s%d,%s,%lu,%lu,%lu,%lu,%s,%s,%s,%u,%u,%lu\n",PROGGER_ID,type,user,pid,ppid,audit,paudit,pname,filename,path,flags,mode,fd)
+#define LOG_CLOSE(type,user,pid,ppid,audit,paudit,fd) printk(KERN_INFO "%s%d,%s,%lu,%lu,%lu,%lu,%u\n",PROGGER_ID,type,user,pid,ppid,audit,paudit,fd)
+#define LOG_S_CLOSE(type,user,pid,ppid,audit,paudit,fd) printk(KERN_INFO "%s%d,%s,%lu,%lu,%lu,%lu,%us\n",PROGGER_ID,type,user,pid,ppid,audit,paudit,fd)
+#define LOG_RENAME(type,user,pid,ppid,audit,paudit,pname,oldfile,newfile,path) printk(KERN_INFO "%s%d,%s,%lu,%lu,%lu,%lu,%s,%s,%s,%s\n",PROGGER_ID,type,user,pid,ppid,audit,paudit,pname,oldfile,newfile,path)
+#define LOG_UNLINK(type,user,pid,ppid,audit,paudit,pname,filename,path) printk(KERN_INFO "%s%d,%s,%lu,%lu,%lu,%lu,%s,%s,%s\n",PROGGER_ID,type,user,pid,ppid,audit,paudit,pname,filename,path)
+#define LOG_UNLINKAT(type,user,pid,ppid,audit,paudit,pname,filename,path,dirfd,flags) printk(KERN_INFO "%s%d,%s,%lu,%lu,%lu,%lu,%s,%s,%s,%u,%u\n",PROGGER_ID,type,user,pid,ppid,audit,paudit,pname,filename,path,dirfd,flags)
+#define LOG_DUP2(type,user,pid,ppid,audit,paudit,oldfd,newfd)printk(KERN_INFO"%s%d,%s,%lu,%lu,%lu,%lu,%u,%u\n",PROGGER_ID,type,user,pid,ppid,audit,paudit,oldfd,newfd)
+#define LOG_RDWR(type,user,pid,ppid,audit,paudit,fd,pos,data)printk(KERN_INFO"%s%d,%s,%lu,%lu,%lu,%lu,%u,%lu,%s\n",PROGGER_ID,type,user,pid,ppid,audit,paudit,fd,pos,data)
+#define LOG_S_RDWR(type,user,pid,ppid,audit,paudit,fd,pos,data) printk(KERN_INFO"%s%d,%s,%lu,%lu,%lu,%lu,%us,%lu,%s\n",PROGGER_ID,type,user,pid,ppid,audit,paudit,fd,pos,data)
+#define LOG_MKDIR(type,user,pid,audit,name,path,mode) printk(KERN_INFO"%s%d,%s,%lu,%lu,%s,%s,%u\n",PROGGER_ID,type,user,pid,audit,name,path,mode)
+#define LOG_RMDIR(type,user,pid,audit,name,path) printk(KERN_INFO"%s%d,%s,%lu,%lu,%s,%s\n",PROGGER_ID,type,user,pid,audit,name,path)
+#define LOG_LINK(type,user,pid,audit,path1,path2,wd) printk(KERN_INFO"%s%d,%s,%lu,%lu,%s,%s,%s\n",PROGGER_ID,type,user,pid,audit,path1,path2,wd)
+#define LOG_LINKAT(type,user,pid,audit,path1,path2,dir1,dir2,flags) printk(KERN_INFO"%s%d,%s,%lu,%lu,%s,%s,%d,%d,%d\n",PROGGER_ID,type,user,pid,audit,path1,path2,dir1,dir2,flags)
+#define LOG_CHOWN(type,user,pid,audit,pname,file,owner,group) printk(KERN_INFO"%s%d,%s,%lu,%lu,%s,%s,%u,%u\n",PROGGER_ID,type,user,pid,audit,pname,file,owner,group)
+#define LOG_FCHOWN(type,user,pid,audit,pname,file,owner,group) printk(KERN_INFO"%s%d,%s,%lu,%lu,%s,%d,%u,%u\n",PROGGER_ID,type,user,pid,audit,pname,file,owner,group)
+#define LOG_FCHOWNAT(type,user,pid,audit,pname,file,dirfd,owner,group,flags) printk(KERN_INFO"%s%d,%s,%lu,%lu,%s,%s,%d,%u,%u,%d\n",PROGGER_ID,type,user,pid,audit,pname,file,dirfd,owner,group,flags)
+#define LOG_CHMOD(type,user,pid,audit,pname,file,mode) printk(KERN_INFO"%s%d,%s,%lu,%lu,%s,%s,%u\n",PROGGER_ID,type,user,pid,audit,pname,file,mode)
+#define LOG_FCHMOD(type,user,pid,audit,pname,file,mode) printk(KERN_INFO"%s%d,%s,%lu,%lu,%s,%u,%u\n",PROGGER_ID,type,user,pid,audit,pname,file,mode)
+#define LOG_FCHMODAT(type,user,pid,audit,pname,file,dirfd,mode,flags) printk(KERN_INFO"%s%d,%s,%lu,%lu,%s,%s,%u,%u,%u\n",PROGGER_ID,type,user,pid,audit,pname,file,dirfd,mode,flags)
+#define LOG_SENDFILE(type,user,pid,audit,outfd,infd,offset,count) printk(KERN_INFO"%s%d,%s,%lu,%lu,%u,%u,%lu,%lu\n",PROGGER_ID,type,user,pid,audit,outfd,infd,offset,count)
+#define LOG_PIPE(type,user,pid,audit,paudit,fd1,fd2,flags) printk(KERN_INFO"%s%d,%s,%lu,%lu,%lu,%u,%u,%u\n",PROGGER_ID,type,user,pid,audit,paudit,fd1,fd2,flags)
+
+
+#define LOG_S_CONNECT(type,user,pid,audit,sockfd,ip,port)printk(KERN_INFO"%s%d,%s,%lu,%lu,%us,%d,%d\n",PROGGER_ID,type,user,pid,audit,sockfd,ip,port)
+#define LOG_S_SOCKET(type,user,pid,audit,pname,sockfd,stype,sprotocol,sfamily) printk(KERN_INFO"%s%d,%s,%lu,%lu,%s,%lus,%d,%d,%d\n",PROGGER_ID,type,user,pid,audit,pname,sockfd,stype,sprotocol,sfamily)
+#define LOG_S_SENDRECV(type,user,pid,audit,sockfd,flags,len,dest,data) printk(KERN_INFO"%s%d,%s,%lu,%lu,%us,%u,%lu,%d,%s\n",PROGGER_ID,type,user,pid,audit,sockfd,flags,len,dest,data)
+#define LOG_S_MSG(type,user,pid,audit,sockfd,flags,len,data) printk(KERN_INFO"%s%d,%s,%lu,%lu,%us,%u,%u,%s\n",PROGGER_ID,type,user,pid,audit,sockfd,flags,len,data)
