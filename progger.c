@@ -1,3 +1,36 @@
+/*
+
+ This file is part of Progger - Logging Provenance for Security
+
+ Copyright (c) 2013, 2014     Mark A. Will <maw41@waikato.ac.nz>
+                              CROW - Cybersecurity Researchers of Waikato
+
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions are met:
+ 	* Redistributions of source code must retain the above copyright
+ 		notice, this list of conditions and the following disclaimer.
+ 	* Redistributions in binary form must reproduce the above copyright
+ 		notice, this list of conditions and the following disclaimer in the
+ 		documentation and/or other materials provided with the distribution.
+ 	* Neither the name of the organization nor the
+	  names of its contributors may be used to endorse or promote products
+ 		derived from this software without specific prior written permission.
+
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ DISCLAIMED. IN NO EVENT SHALL ANTHONY M. BLAKE BE LIABLE FOR ANY
+ DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+*/
+
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/moduleparam.h>
@@ -128,14 +161,16 @@ int init_module(void)
 	return 0;
 }
 
+/* 
+// NOT FULLY TESTED 
 void cleanup_module(void)
 {
 	printk(KERN_ALERT "Progger: module removed\n");
 	
-	/* Disable Page Protection so the table can be modified */
+	// Disable Page Protection so the table can be modified
 	disable_page_protection( (long unsigned int) sys_call_table);
 
-	/* Restore original system calls */	
+	// Restore original system calls
 	sys_call_table[__NR_open] = original_sys_open_call;
 	sys_call_table[__NR_close] = original_sys_close_call;
 	sys_call_table[__NR_rename] = original_sys_rename_call;
@@ -170,9 +205,10 @@ void cleanup_module(void)
 	sys_call_table[__NR_pipe] = original_sys_pipe_call;
 	sys_call_table[__NR_pipe2] = original_sys_pipe2_call;
 
-	/* Renable Page Protection */
+	// Renable Page Protection
 	enable_page_protection( (long unsigned int) sys_call_table);
 
-	/* Clean Up */
+	// Clean Up
 	cleanup_passwd_entries();
 }
+*/

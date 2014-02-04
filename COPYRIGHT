@@ -1,10 +1,10 @@
 /*
-
- This file is part of Progger - Logging Provenance for Security
-
+ 
+ This file is part of Progger - Logging Provenance for Security 
+  
  Copyright (c) 2013, 2014     Mark A. Will <maw41@waikato.ac.nz>
                               CROW - Cybersecurity Researchers of Waikato
-
+	
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -30,15 +30,3 @@
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
-
-struct log_entry
-{
-	int type;
-	long fd;
-	loff_t offset;
-	char *username;
-	char *owner;
-	char *filename;
-	char *data;
-	struct timeval time;
-};
