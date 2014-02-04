@@ -33,7 +33,20 @@
 
 #define PROGGER_ID "Progger:"
 
-//Log Formats
+/* Sample rsyslog config file:
+ *
+ *  ...
+ *  if $msg startswith 'Progger' then /var/log/progger.log
+ *  if $msg startswith 'Progger' then ~
+ *  ...
+ *  
+ * For more information on rsyslog, see http://wiki.rsyslog.com/index.php/Main_Page
+ */
+
+/* Log Formats:
+ *  Formats can be easily changed below by rearranging or removing values from the prink statement,
+ *  however for additional values, the macros must be updated in the source code.
+ */
 #define LOG_OPEN(type,user,pid,ppid,audit,paudit,pname,filename,path,flags,mode,fd) printk(KERN_INFO "%s%d,%s,%lu,%lu,%lu,%lu,%s,%s,%s,%u,%u,%lu\n",PROGGER_ID,type,user,pid,ppid,audit,paudit,pname,filename,path,flags,mode,fd)
 #define LOG_CLOSE(type,user,pid,ppid,audit,paudit,fd) printk(KERN_INFO "%s%d,%s,%lu,%lu,%lu,%lu,%u\n",PROGGER_ID,type,user,pid,ppid,audit,paudit,fd)
 #define LOG_S_CLOSE(type,user,pid,ppid,audit,paudit,fd) printk(KERN_INFO "%s%d,%s,%lu,%lu,%lu,%lu,%us\n",PROGGER_ID,type,user,pid,ppid,audit,paudit,fd)
