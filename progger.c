@@ -128,8 +128,8 @@ int init_module(void)
 	original_sys_unlink_call = (void*)xchg(&sys_call_table[__NR_unlink], our_sys_unlink);
 	original_sys_unlinkat_call = (void*)xchg(&sys_call_table[__NR_unlinkat], our_sys_unlinkat);
 	original_sys_write_call = (void*)xchg(&sys_call_table[__NR_write], our_sys_write);
-	original_sys_pwrite_call = (void*)xchg(&sys_call_table[__NR_pwrite], our_sys_pwrite);
 	original_sys_writev_call = (void*)xchg(&sys_call_table[__NR_writev], our_sys_writev);
+	//original_sys_pwrite_call = (void*)xchg(&sys_call_table[__NR_pwrite], our_sys_pwrite);
 	original_sys_pwrite64_call = (void*)xchg(&sys_call_table[__NR_pwrite64], our_sys_pwrite64);
 	original_sys_dup_call = (void*)xchg(&sys_call_table[__NR_dup], our_sys_dup);
 	original_sys_dup2_call = (void*)xchg(&sys_call_table[__NR_dup2], our_sys_dup2);

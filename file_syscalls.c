@@ -349,7 +349,12 @@ asmlinkage long our_sys_write(unsigned int fd, const char __user *buf, size_t co
 	return original_sys_write_call(fd, buf, count);
 }
 
-asmlinkage long our_sys_pwrite(unsigned int fd, const char __user *buf, size_t count, off_t offset)
+//asmlinkage long our_sys_pwrite(unsigned int fd, const char __user *buf, size_t count, loff_t pos)
+//{
+//	return original_sys_pwrite_call(fd, buf, count, pos);
+//}
+
+asmlinkage long our_sys_pwrite64(unsigned int fd, const char __user *buf, size_t count, loff_t offset)
 {
 	struct file *f;
 	struct passwd_entry *pe;
@@ -398,7 +403,7 @@ asmlinkage long our_sys_pwrite(unsigned int fd, const char __user *buf, size_t c
 		kfree(data);
 	}
 	kfree(pids);
-	return original_sys_write_call(fd, buf, count);
+	return original_sys_pwrite64_call(fd, buf, count, offset);
 }
 
 
@@ -862,7 +867,3 @@ asmlinkage long our_sys_writev(unsigned long fd, const struct iovec __user *vec,
 	return original_sys_writev_call(fd, vec, vlen);
 }
 
-asmlinkage long our_sys_pwrite64(unsigned int fd, const char __user *buf, size_t count, loff_t pos)
-{
-	return original_sys_pwrite64_call(fd, buf, count, pos);
-}
