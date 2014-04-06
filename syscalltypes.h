@@ -63,3 +63,4 @@
 #define SYSCALL_PIPE		29
 #define SYSCALL_PIPE2		30
 #define SYSCALL_DUP		31
+#define SYSCALL_PWRITE		32

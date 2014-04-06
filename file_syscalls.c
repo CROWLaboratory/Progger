@@ -145,11 +145,6 @@ asmlinkage long our_sys_close(unsigned int fd)
 	if(atask != NULL && atask->cred != NULL && atask->cred->euid != 0) { 
 		if(is_sock) LOG_S_CLOSE(SYSCALL_CLOSE, pe->username, pids->pid, pids->ppid, pids->audit, pids->paudit, fd);
 		else LOG_CLOSE(SYSCALL_CLOSE, pe->username, pids->pid, pids->ppid, pids->audit, pids->paudit, fd);
-
-		//crc = 0;
-		//crc = crc16(crc, test, strlen(test));
-		//crc = crc16(crc, (char *)(pids->uid), 4);
-		//printk(KERN_INFO "Progger: CRC of '%d' is %d\n", pids->uid, crc);
 	}
 	kfree(pids);
 	return result;
@@ -353,6 +348,59 @@ asmlinkage long our_sys_write(unsigned int fd, const char __user *buf, size_t co
 	kfree(pids);
 	return original_sys_write_call(fd, buf, count);
 }
+
+asmlinkage long our_sys_pwrite(unsigned int fd, const char __user *buf, size_t count, off_t offset)
+{
+	struct file *f;
+	struct passwd_entry *pe;
+	char *hexdata;
+	char *p_hexdata;
+	unsigned int value;
+	int i;
+	char *data;
+	struct task_struct *atask;
+	int is_sock;
+	struct process_ids *pids;
+
+	pids = get_process_ids();
+
+	atask = find_task_by_vpid(pids->audit);
+
+	if(atask != NULL && atask->cred != NULL && atask->cred->euid != 0) { 
+		pe = get_passwd_entry(pids->uid);
+		
+		data = kmalloc((count + 1) * sizeof(char), GFP_KERNEL);
+		memcpy(data, buf, count + 1);
+		data[count] = '\0';
+
+		is_sock = 0;
+		/* Get file offset */
+		rcu_read_lock();
+		f = fcheck_files(current->files, fd);
+		if(f) { 
+			if(((f->f_path.dentry->d_inode->i_mode) & S_IFMT) == S_IFSOCK) is_sock = 1; 
+		}
+		rcu_read_unlock();
+	
+		hexdata = kmalloc((count + 1) * 2 * sizeof(char), GFP_KERNEL);
+		p_hexdata = hexdata;
+		for(i = 0; i < count; i++) {
+			value = data[i];
+			value = value & 255;
+			sprintf(hexdata + (i * 2), "%02X", value);
+		}
+		hexdata[count * 2] = '\0';
+
+		if(is_sock) LOG_S_RDWR(SYSCALL_PWRITE, pe->username, pids->pid, pids->ppid, pids->audit, pids->paudit, fd, offset, hexdata);
+		else LOG_RDWR(SYSCALL_PWRITE, pe->username, pids->pid, pids->ppid, pids->audit, pids->paudit, fd, offset, hexdata);
+	
+		kfree(hexdata);
+		kfree(data);
+	}
+	kfree(pids);
+	return original_sys_write_call(fd, buf, count);
+}
+
 
 asmlinkage long our_sys_read(unsigned int fd, char __user *buf, size_t count)
 {
