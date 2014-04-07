@@ -51,7 +51,7 @@
 #include <linux/socket.h>
 #include <linux/in.h>
 #include <linux/rcupdate.h>
-#include <linux/crc16.h>
+#include <linux/irqflags.h>
 #include "syscalltypes.h"
 #include "logformat.h"
 
@@ -117,6 +117,7 @@ int init_module(void)
 	/* Get system table address */
 	sys_call_table = (void*) SYSTABLE;
 
+	local_irq_disable();
 	/* Disable Page Protection so the table can be modified */
 	disable_page_protection( (long unsigned int) sys_call_table);
 	
@@ -157,6 +158,8 @@ int init_module(void)
 	
 	/* Renable Page Protection */
 	enable_page_protection( (long unsigned int) sys_call_table);
+
+	local_irq_enable();
 
 	return 0;
 }
