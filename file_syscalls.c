@@ -349,11 +349,6 @@ asmlinkage long our_sys_write(unsigned int fd, const char __user *buf, size_t co
 	return original_sys_write_call(fd, buf, count);
 }
 
-//asmlinkage long our_sys_pwrite(unsigned int fd, const char __user *buf, size_t count, loff_t pos)
-//{
-//	return original_sys_pwrite_call(fd, buf, count, pos);
-//}
-
 asmlinkage long our_sys_pwrite64(unsigned int fd, const char __user *buf, size_t count, loff_t offset)
 {
 	struct file *f;
@@ -379,7 +374,6 @@ asmlinkage long our_sys_pwrite64(unsigned int fd, const char __user *buf, size_t
 		data[count] = '\0';
 
 		is_sock = 0;
-		/* Get file offset */
 		rcu_read_lock();
 		f = fcheck_files(current->files, fd);
 		if(f) { 
