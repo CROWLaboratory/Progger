@@ -176,7 +176,11 @@ asmlinkage long our_sys_accept(int sockfd, struct sockaddr __user *addr, int *ad
 	pid = current->pid;
 	pe = get_passwd_entry(uid);
 
-	if(addr->sa_family == AF_INET) {
+	if(addr == NULL){
+		// TODO: deal with addr being null
+		return result;
+	}
+	else if(addr->sa_family == AF_INET) {
 		ipv4 = (struct sockaddr_in *) addr;
 		ipv4_addr = (unsigned int)(ipv4->sin_addr.s_addr);
 		LOG_S_CONNECT(SYSCALL_S_ACCEPT,pe->username,pid,audit, sockfd, ipv4_addr, ipv4->sin_port);

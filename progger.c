@@ -118,6 +118,7 @@ int init_module(void)
 	sys_call_table = (void*) SYSTABLE;
 
 	local_irq_disable();
+
 	/* Disable Page Protection so the table can be modified */
 	disable_page_protection( (long unsigned int) sys_call_table);
 	
