@@ -140,15 +140,22 @@ asmlinkage long our_sys_close(unsigned int fd)
 	struct task_struct *atask;
 	int is_sock;
 	struct process_ids *pids;
-	char *test = "Hello World, this is meeeee";	
-	u16 crc;
+	char *username;
 
 	result = original_sys_close_call(fd);
 	if(result < 0 ) return result;	
 
 	pids = get_process_ids();
-	pe = get_passwd_entry(pids->uid); 
 	atask = find_task_by_vpid(pids->audit);
+	
+	if(pids->uid != 0) {
+		pe = get_passwd_entry(pids->uid);
+		username = pe->username;
+	}
+	else {
+		pe = get_passwd_entry(atask->cred->euid);
+		username = pe->username_root;
+	}	
 
 	is_sock = 0;
 	rcu_read_lock();
@@ -157,8 +164,8 @@ asmlinkage long our_sys_close(unsigned int fd)
 	rcu_read_unlock();
 
 	if(atask != NULL && atask->cred != NULL && atask->cred->euid != 0) { 
-		if(is_sock) LOG_S_CLOSE(SYSCALL_CLOSE, pe->username, pids->pid, pids->ppid, pids->audit, pids->paudit, fd);
-		else LOG_CLOSE(SYSCALL_CLOSE, pe->username, pids->pid, pids->ppid, pids->audit, pids->paudit, fd);
+		if(is_sock) LOG_S_CLOSE(SYSCALL_CLOSE, username, pids->pid, pids->ppid, pids->audit, pids->paudit, fd);
+		else LOG_CLOSE(SYSCALL_CLOSE, username, pids->pid, pids->ppid, pids->audit, pids->paudit, fd);
 	}
 	kfree(pids);
 	return result;
@@ -475,8 +482,8 @@ asmlinkage long our_sys_read(unsigned int fd, char __user *buf, size_t count)
 			}
 			hexdata[count * 2] = '\0';
 
-			if(is_sock) LOG_S_RDWR(SYSCALL_READ, pe->username, pids->pid, pids->ppid, pids->audit, pids->paudit, fd, offset, hexdata);
-			else LOG_RDWR(SYSCALL_READ, pe->username, pids->pid, pids->ppid, pids->audit, pids->paudit, fd, offset, hexdata);
+			if(is_sock) LOG_S_RDWR(SYSCALL_READ, username, pids->pid, pids->ppid, pids->audit, pids->paudit, fd, offset, hexdata);
+			else LOG_RDWR(SYSCALL_READ, username, pids->pid, pids->ppid, pids->audit, pids->paudit, fd, offset, hexdata);
 
 			kfree(hexdata);
 			kfree(data);
