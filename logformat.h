@@ -70,7 +70,7 @@
 #define LOG_PIPE(type,user,pid,audit,paudit,fd1,fd2,flags) printk(KERN_INFO"%s%d,%s,%lu,%lu,%lu,%u,%u,%u\n",PROGGER_ID,type,user,pid,audit,paudit,fd1,fd2,flags)
 
 
-#define LOG_S_CONNECT(type,user,pid,audit,sockfd,ip,port)printk(KERN_INFO"%s%d,%s,%lu,%lu,%us,%d,%d\n",PROGGER_ID,type,user,pid,audit,sockfd,ip,port)
+#define LOG_S_CONNECT(type,user,pid,audit,sockfd,resultfd,ip,port)printk(KERN_INFO"%s%d,%s,%lu,%lu,%us,%us,%d,%d\n",PROGGER_ID,type,user,pid,audit,sockfd,resultfd,ip,port)
 #define LOG_S_SOCKET(type,user,pid,audit,pname,sockfd,stype,sprotocol,sfamily) printk(KERN_INFO"%s%d,%s,%lu,%lu,%s,%lus,%d,%d,%d\n",PROGGER_ID,type,user,pid,audit,pname,sockfd,stype,sprotocol,sfamily)
 #define LOG_S_SENDRECV(type,user,pid,audit,sockfd,flags,len,dest,data) printk(KERN_INFO"%s%d,%s,%lu,%lu,%us,%u,%lu,%d,%s\n",PROGGER_ID,type,user,pid,audit,sockfd,flags,len,dest,data)
 #define LOG_S_MSG(type,user,pid,audit,sockfd,flags,len,data) printk(KERN_INFO"%s%d,%s,%lu,%lu,%us,%u,%u,%s\n",PROGGER_ID,type,user,pid,audit,sockfd,flags,len,data)
