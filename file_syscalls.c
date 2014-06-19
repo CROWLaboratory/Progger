@@ -79,7 +79,7 @@ asmlinkage long our_sys_open(const char* file, int flags, int mode)
 	char *username;
 	struct passwd_entry *pe = NULL;
 	struct process_ids *pids;
-	struct task_struct *ptask;
+	struct task_struct *ptask, *atask;
 	int is_log;
 	int type; 
 
@@ -104,6 +104,7 @@ asmlinkage long our_sys_open(const char* file, int flags, int mode)
 		}
 
 		pids = get_process_ids();
+		atask = find_task_by_vpid(pids->audit);
 
 	
 		if(pids->uid != 0) {
