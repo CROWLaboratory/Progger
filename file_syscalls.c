@@ -76,6 +76,7 @@ asmlinkage long our_sys_open(const char* file, int flags, int mode)
 	long fd = 0;
 	long uid, gid;
 	struct log_path *p; 
+	char *username;
 	struct passwd_entry *pe = NULL;
 	struct process_ids *pids;
 	struct task_struct *ptask;
@@ -103,10 +104,22 @@ asmlinkage long our_sys_open(const char* file, int flags, int mode)
 		}
 
 		pids = get_process_ids();
-		pe = get_passwd_entry(pids->uid);
+
+	
+		if(pids->uid != 0) {
+			pe = get_passwd_entry(pids->uid);
+			username = pe->username;
+		}
+		else {
+			pe = get_passwd_entry(atask->cred->euid);
+			username = pe->username_root;
+		}	
+
+
+
 		p = find_path();
 		ptask = find_task_by_vpid(pids->pid);
-		LOG_OPEN(type, pe->username, pids->pid, pids->ppid, pids->audit, pids->paudit, ptask->comm, file, p->name, flags, mode, fd);
+		LOG_OPEN(type, username, pids->pid, pids->ppid, pids->audit, pids->paudit, ptask->comm, file, p->name, flags, mode, fd);
 		kfree(p);
 		kfree(pids);
 	} 

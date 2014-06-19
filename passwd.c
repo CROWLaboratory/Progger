@@ -165,7 +165,7 @@ static int parse_passwdfile(const char *inputstring_param, const unsigned long i
 				memcpy(entry->username, buff, strlen(buff) + 1);
 				buff[i] = '*';
 				buff[i+1] = '\0';
-				memcpy(entry->username_root, buff, strlen(buff) + 1);
+				memcpy(entry->username_root, buff, strlen(buff) + 2);
 			}
 			else if(e == IDX_PASSWORD) memcpy(entry->password, buff, strlen(buff) + 1);
 			else if(e == IDX_UID)	   memcpy(entry->uid, buff, strlen(buff) + 1);
